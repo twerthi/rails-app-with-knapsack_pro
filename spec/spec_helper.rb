@@ -1,4 +1,5 @@
 require 'knapsack_pro'
+require 'allure-rspec'
 
 # uncomment if you want to test how custom logger works
 #require 'logger'
@@ -7,6 +8,11 @@ require 'knapsack_pro'
 
 require 'simplecov'
 SimpleCov.start
+
+AllureRSpec.configure do |c|
+  c.output_dir = "/codefresh/volume/allure-results/#{build_id}"
+  c.clean_dir = false
+end
 
 # CUSTOM_CONFIG_GOES_HERE
 KnapsackPro::Hooks::Queue.before_queue do |queue_id|
@@ -120,6 +126,8 @@ RSpec.configure do |config|
     #     # => "be bigger than 2"
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
   end
+
+  config.include AllureRSpec::Adaptor
 
   # rspec-mocks config goes here. You can use an alternate test double
   # library (such as bogus or mocha) by changing the `mock_with` option here.
