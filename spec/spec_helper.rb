@@ -9,6 +9,8 @@ require 'allure-rspec'
 require 'simplecov'
 SimpleCov.start
 
+build_id=ENV["BUILD_ID"]
+
 AllureRSpec.configure do |c|
   c.output_dir = "/codefresh/volume/allure-results/#{build_id}"
   c.clean_dir = false
