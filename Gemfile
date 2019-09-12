@@ -49,6 +49,8 @@ group :development, :test do
   gem 'knapsack_pro'
   #gem 'knapsack_pro', github: 'KnapsackPro/knapsack_pro-ruby', branch: 'rspec-queue-mode-record-timing-fix'
 
+  gem 'allure-rspec'
+
   gem 'test-unit-rails'
 
   gem 'tzinfo-data'
