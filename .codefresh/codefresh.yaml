@@ -1,0 +1,59 @@
+version: "1.0"
+stages:
+  - "clone"
+  - "build"
+  - "tests"
+steps:
+  main_clone:
+    type: "git-clone"
+    description: "Cloning main repository..."
+    repo: "${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}"
+    revision: "${{CF_BRANCH}}"
+    stage: "clone"
+  BuildTestDockerImage:
+    title: Building Test Docker image
+    type: build
+    arguments:
+      image_name: '${{CF_ACCOUNT}}/${{CF_REPO_NAME}}-test'
+      tag: '${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}'
+      dockerfile: Test.Dockerfile
+    stage: "build"
+  RunMatrix:
+    title: "Running Knapsack Matrix"
+    stage: "tests"
+    image: '${{BuildTestDockerImage}}'
+    environment:
+      - KNAPSACK_PRO_CI_NODE_TOTAL=5
+      - BUILD_ID=${{CF_BUILD_ID}}
+      - KNAPSACK_PRO_BRANCH=${{CF_BRANCH}}
+      - KNAPSACK_PRO_COMMIT_HASH=${{CF_REVISION}}
+      - PGHOST=postgres
+      - PGUSER=rails-app-with-knapsack_pro
+      - PGPASSWORD=password
+    matrix:
+      environment:
+       - KNAPSACK_PRO_CI_NODE_INDEX=0
+       - KNAPSACK_PRO_CI_NODE_INDEX=1
+       - KNAPSACK_PRO_CI_NODE_INDEX=2
+       - KNAPSACK_PRO_CI_NODE_INDEX=3
+       - KNAPSACK_PRO_CI_NODE_INDEX=4
+    working_directory: /src
+    commands:
+      - bundle exec rake knapsack_pro:rspec
+    fail_fast: false
+    services:
+      composition:
+        postgres:
+          image: postgres:latest
+          environment:
+            - POSTGRES_DB=rails-app-with-knapsack_pro_test
+            - POSTGRES_PASSWORD=password
+            - POSTGRES_USER=rails-app-with-knapsack_pro
+          ports:
+            - 5432
+  UploadTestReports:
+    title: "Uploading Test Reports"
+    stage: "tests"
+    image: codefresh/cf-docker-test-reporting
+    environment:
+      - ALLURE_DIR=${{CF_VOLUME_PATH}}/allure-results/${{CF_BUILD_ID}}
