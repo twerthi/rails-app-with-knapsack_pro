@@ -1,5 +1,5 @@
 describe 'FooBar' do
   it do
-    expect(true).to be true
+    expect(false).to be true
   end
 end
