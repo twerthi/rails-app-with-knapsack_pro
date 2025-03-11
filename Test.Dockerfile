@@ -1,4 +1,5 @@
-FROM dustinvanbuskirk/cfstep-knapsack:alpha
+#FROM dustinvanbuskirk/cfstep-knapsack:alpha
+FROM twerthi/cfstep-knapsack
 
 COPY . /src
 
