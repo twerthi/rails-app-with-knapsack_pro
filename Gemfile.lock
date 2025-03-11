@@ -162,7 +162,7 @@ GEM
     parallel_tests (2.21.2)
       parallel
     pg (1.5.9)
-    power_assert (1.1.1)
+    power_assert (2.0.5)
     pry (0.15.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
