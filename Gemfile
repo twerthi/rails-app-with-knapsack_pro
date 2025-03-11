@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'binding_of_caller'
+#gem 'binding_of_caller'
 gem 'rails', '~> 8.0.1'
 gem 'pg', '~> 1.5.9'
 # Use SCSS for stylesheets
