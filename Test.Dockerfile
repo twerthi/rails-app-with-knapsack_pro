@@ -6,3 +6,7 @@ COPY . /src
 WORKDIR /src
 
 RUN bundle install
+
+RUN bundle info json
+
+RUN bundle info sdoc
